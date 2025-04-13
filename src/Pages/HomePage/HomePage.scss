@@ -1,0 +1,72 @@
+@use "../../styles/variables";
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+.home__page{
+    position: relative;
+}
+.nav__bar{
+    font-family: "Inter", sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 50px;
+    padding-left: 40px;
+    padding-block: 5px;
+    border-bottom: 1px solid variables.$primary-color;
+    .logo__img{
+        width: 150px;
+        margin-bottom: 10px;
+    }
+    ul{
+        display: flex;
+        gap: 30px;
+        list-style: none;
+        align-items: center;
+        .write__icon{
+            margin-top: 4px;
+            width: 28px;
+        }
+        li{
+            font-weight: 500;
+            color: variables.$secondary-color;
+            cursor: pointer;
+        }
+
+        button{
+            font-family: "Inter", sans-serif;
+            background-color: variables.$primary-color;
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            font-weight: 500;
+            border-radius: 20px;
+            color: white;
+        }
+    }
+}
+
+.hero{
+    display: flex;
+    justify-content: space-between;
+    padding: 50px;
+
+    h1{
+        font-size: 5.5rem;
+        width: 620px;
+        color: variables.$secondary-color;
+    }
+    p{
+        font-size: 1.5rem;
+        font-weight: 400;
+    }
+    button{
+        font-family: "Inter", sans-serif;
+        background-color: variables.$primary-color;
+        cursor: pointer;
+        padding: 10px 35px;
+        border: none;
+        font-weight: 500;
+        border-radius: 20px;
+        color: white;
+        margin-top: 20px;
+    }
+}

@@ -1,0 +1,20 @@
+.nav__bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 20px;
+    padding-block: 5px;
+    .left{
+        display: flex;
+        align-items: center;
+    }
+    .logo__img{
+        width: 150px;
+    }
+    ul{
+        display: flex;
+        list-style: none;
+        align-items: center;
+        gap: 10px;
+    }
+}
