@@ -1,4 +1,6 @@
 @use "../../styles/variables";
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 .login__form{
     font-family: "Inter", sans-serif;
     width: 100vw;
@@ -9,28 +11,62 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgba(255,255,255,0.5);
+    transition: all 200ms ease;
+    transform: scale(0.7);
+    opacity: 0;
+    visibility: hidden;
+
+    &.show{
+        transform: scale(1);
+        opacity: 1;
+        visibility: visible;
+    }
 
     form{
         padding: 50px;
         display: flex;
+        gap: 20px;
         flex-direction: column;
         align-items: center;
         width: 50%;
-        background-color: lightblue;
+        background-color: white;
         height: 100%;
+        box-shadow: 1px 1px 10px 2px #e2e2e2;
 
+        h1{
+            color: variables.$secondary-color;
+        }
         .input__section{
             display: flex;
             flex-direction: column;
 
+            label{
+                margin-left: 20px;
+                display: none;
+            }
             input{
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                font-family: "Inter", sans-serif;
                 padding: 10px 20px;
                 width: 340px;
                 outline: none;
-                border-radius: 5px;
+                border-radius: 20px;
                 border: none;
                 font-weight: medium;
-                font-size: 1.1rem;
+                border: 1px solid black;
+                font-size: 1.05rem;
+
+                &::placeholder {
+                    color: #888;
+                    font-family: "Inter", sans-serif;
+                    transition: color 0.1s ease;
+                }
+                
+                &:focus::placeholder {
+                    color: transparent;
+                }
             }
         }
         p{
@@ -41,17 +77,35 @@
             cursor: pointer;
             color: variables.$primary-color;
         }
+        .google__auth{
+            width: 340px;
+            padding: 10px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            position: relative;
+            
+            img{
+                width: 20px;
+                position: absolute;
+                left: 10px;
+            }
+        }
         button{
             font-family: "Inter", sans-serif;
             background-color: variables.$primary-color;
             cursor: pointer;
-            padding: 10px 20px;
+            padding: 13px 20px;
             border: none;
             font-weight: 500;
             border-radius: 20px;
             color: white;
             width: 340px;
-            margin-block: 20px;
+            margin-bottom: 20px;
         }
     }
 }

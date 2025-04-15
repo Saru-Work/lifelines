@@ -1,3 +1,4 @@
+@use "../../styles/variables";
 .nav__bar{
     display: flex;
     align-items: center;
@@ -7,14 +8,80 @@
     .left{
         display: flex;
         align-items: center;
+
+        input{
+            padding: 13px 20px 13px 50px;
+            background-color: #f9f9f9;
+            border-radius: variables.$primary-border-radius;
+            border: none;
+            outline: none;
+        }
+        div{
+            position: relative;
+        }
+        .search__icon{
+            width: 20px;
+            color: variables.$secondary-color;
+            position: absolute;
+            top: 50%;
+            left: 17px;
+            transform: translateY(-50%);
+        }
     }
     .logo__img{
         width: 150px;
+        margin-bottom: 10px;
     }
     ul{
         display: flex;
         list-style: none;
         align-items: center;
         gap: 10px;
+
+        .icon{
+            margin-top: 4px;
+            width: 28px;
+            color: variables.$secondary-color;
+        }
+        .user{
+            position: relative;
+        }
+    }
+}
+.dropdown{
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    box-shadow: 1px 1px 10px 2px #e2e2e2;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: thin;
+    width: 200px;
+    ul{
+        padding-block: 10px;
+        width: 100%;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+
+        li{
+            font-weight: 400;
+            font-size: 0.8rem;
+            width: 100%;
+            padding: 5px 20px;
+            &:hover{
+                color: black;
+            }
+
+            img{
+                width: 20px;
+            }
+        }
+        .dropdown__li{
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
     }
 }

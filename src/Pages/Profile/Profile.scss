@@ -1,0 +1,28 @@
+@use "../../styles/variables";
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+.profile{
+    font-family: "Inter", sans-serif;
+    .content{
+        display: flex;
+        .right{
+            flex: 1;
+        }
+        .left{
+            flex:2;
+            padding: 50px 100px;
+            .name{
+                font-size: 2.5rem;
+                font-weight: 600;
+                margin-bottom: 15px;
+            }
+            h2{
+                color: #696969;
+            }
+        }
+        .edit__btn {
+            text-decoration: underline;
+            color: variables.$primary-color;
+            cursor: pointer;
+        }
+    }
+}
