@@ -10,6 +10,8 @@
         .left{
             flex:2;
             padding: 50px 100px;
+            border-right: 1px solid #ccc;
+            min-height: calc(100vh - 50px);
             .name{
                 font-size: 2.5rem;
                 font-weight: 600;

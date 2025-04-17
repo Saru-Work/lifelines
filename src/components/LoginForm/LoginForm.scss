@@ -12,7 +12,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(255,255,255,0.5);
-    transition: all 200ms ease;
+    transition: all 100ms ease;
     transform: scale(0.7);
     opacity: 0;
     visibility: hidden;
@@ -40,6 +40,7 @@
         .input__section{
             display: flex;
             flex-direction: column;
+            position: relative;
 
             label{
                 margin-left: 20px;
@@ -68,6 +69,20 @@
                     color: transparent;
                 }
             }
+            .show__password__btn{
+                position: absolute;
+                right: 14px;
+                top: 11px;
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+            }
+            .eye__icon{
+                width: 22px;
+            }
+            .error{
+                height: 16px;
+            }
         }
         p{
             font-weight: medium;
@@ -95,7 +110,7 @@
                 left: 10px;
             }
         }
-        button{
+        .sign__btn{
             font-family: "Inter", sans-serif;
             background-color: variables.$primary-color;
             cursor: pointer;

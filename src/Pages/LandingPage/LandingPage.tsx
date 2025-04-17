@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./LandingPage.scss";
-import logo from "../../assets/logo/Logo1.png";
+import logo from "../../assets/logo/LIfeLines.png";
 import heroImg from "../../assets/pictures/hero.png";
 import writeIcon from "../../assets/icons/write.svg";
 import { useSelector, useDispatch } from "react-redux";

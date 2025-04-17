@@ -8,6 +8,8 @@ import { validateEmail, validatePassword } from "../../utils/authValidate";
 import { auth, db } from "../../config/firebase";
 import { addUser } from "../../state/userSlice";
 import { collection, addDoc } from "firebase/firestore";
+import showIcon from "../../assets/icons/view.png";
+import hideIcon from "../../assets/icons/hide.png";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -36,6 +38,10 @@ const registerUser = async (uid: string, email: string | null) => {
 };
 
 const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
+  const [isShowing, setIsShowing] = useState({
+    password: false,
+    cPassword: false,
+  });
   const formContainerRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch();
   const loginState = useSelector((state: RootState) => state.login.isOpen);
@@ -61,7 +67,13 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
       userCredentials.password
     )
       .then((user) => {
-        dispatch(addUser({ email: user.user.email, uid: user.user.uid }));
+        dispatch(
+          addUser({
+            email: user.user.email,
+            uid: user.user.uid,
+            displayName: user.user.displayName,
+          })
+        );
         dispatch(changeState(loginState));
         console.log(user.user);
       })
@@ -88,6 +100,7 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
   useEffect(() => {
     if (!loginState) {
       setErrors({ ...errors, passwordError: "", emailError: "" });
+      setIsShowing({ cPassword: false, password: false });
     }
   }, [loginState]);
   return (
@@ -151,10 +164,23 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
                 password: e.target.value,
               });
             }}
-            type="password"
+            type={isShowing.password ? "text" : "password"}
             placeholder="Password"
           />
           <p className="password__error error">{errors.passwordError}</p>
+          <button
+            type="button"
+            onClick={(e) => {
+              setIsShowing({ ...isShowing, password: !isShowing.password });
+            }}
+            className="show__password__btn"
+          >
+            {isShowing.password ? (
+              <img className="eye__icon" src={hideIcon} />
+            ) : (
+              <img className="eye__icon" src={showIcon} />
+            )}
+          </button>
         </div>
         {!isLogin && (
           <div className="input__section confirm__password__section">
@@ -165,10 +191,25 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
                   confirmPassword: e.target.value,
                 });
               }}
-              type="password"
+              type={isShowing.cPassword ? "text" : "password"}
               placeholder="Confirm password"
             />
-            <p>{errors.confirmPasswordError}</p>
+            <p className="error confirm__password__error">
+              {errors.confirmPasswordError}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setIsShowing({ ...isShowing, cPassword: !isShowing.cPassword });
+              }}
+              className="show__password__btn"
+            >
+              {isShowing.cPassword ? (
+                <img className="eye__icon" src={hideIcon} />
+              ) : (
+                <img className="eye__icon" src={showIcon} />
+              )}
+            </button>
           </div>
         )}
         {isLogin ? (
@@ -183,7 +224,15 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
             Sign Up with Google
           </div>
         )}
-        {isLogin ? <button>Sign In</button> : <button>Sign Up</button>}
+        {isLogin ? (
+          <button type="submit" className="sign__btn">
+            Sign In
+          </button>
+        ) : (
+          <button type="submit" className="sign__btn">
+            Sign Up
+          </button>
+        )}
         {isLogin ? (
           <p>
             No account?{" "}

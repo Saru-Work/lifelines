@@ -3,10 +3,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 20px;
+    padding-inline: 60px;
     padding-block: 5px;
+    border-bottom: 1px solid #ccc;
     .left{
         display: flex;
+        gap: 20px;
         align-items: center;
 
         input{
@@ -30,7 +32,7 @@
     }
     .logo__img{
         width: 150px;
-        margin-bottom: 10px;
+        // margin-bottom: 10px;
     }
     ul{
         display: flex;
@@ -45,6 +47,7 @@
         }
         .user{
             position: relative;
+            cursor: pointer;
         }
     }
 }
@@ -58,24 +61,33 @@
     font-size: 0.9rem;
     font-weight: thin;
     width: 200px;
+    padding: 20px;
     ul{
-        padding-block: 10px;
         width: 100%;
         list-style: none;
         display: flex;
         flex-direction: column;
+        color: variables.$secondary-color;
+        cursor: pointer;
 
         li{
             font-weight: 400;
             font-size: 0.8rem;
             width: 100%;
             padding: 5px 20px;
+            display: flex;
+            align-items: center;
+            border-radius: 4px;
+            gap: 10px;
             &:hover{
                 color: black;
             }
 
             img{
                 width: 20px;
+            }
+            &:hover{
+                background-color: #eeeeee;
             }
         }
         .dropdown__li{

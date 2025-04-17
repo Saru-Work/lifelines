@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import searchIcon from "../../assets/icons/search.svg";
 import "./NavBar.scss";
-import logo from "../../assets/logo/Logo1.png";
+import logo from "../../assets/logo/LIfeLines.png";
 import writeIcon from "../../assets/icons/write.svg";
 import notificationIcon from "../../assets/icons/notification.svg";
 import userIcon from "../../assets/icons/user.png";
@@ -13,8 +13,10 @@ import { removeUser } from "../../state/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../state/store";
+import settingIcon from "../../assets/icons/settings.svg";
+import logoutIcon from "../../assets/icons/signout.svg";
 const NavBar = () => {
   const dispatch = useDispatch();
   const userState = useSelector((state: RootState) => state.user);
@@ -35,7 +37,7 @@ const NavBar = () => {
         for (let i = 0; userState.email[i] != "@"; i++) {
           id += userState.email[i];
         }
-        navigate("me");
+        navigate("/me");
       },
     },
     { content: "Library", icon: libraryIcon, action: () => {} },
@@ -46,7 +48,9 @@ const NavBar = () => {
   return (
     <div className="nav__bar">
       <div className="left">
-        <img className="logo__img" src={logo} alt="" />
+        <Link to="/">
+          <img className="logo__img" src={logo} alt="" />
+        </Link>
         <div>
           <img className="search__icon" src={searchIcon} alt="" />
           <input type="text" placeholder="Search" />
@@ -55,7 +59,9 @@ const NavBar = () => {
       <nav>
         <ul>
           <li>
-            <img className="write__icon icon" src={writeIcon} alt="" />
+            <Link to="/write">
+              <img className="write__icon icon" src={writeIcon} alt="" />
+            </Link>
           </li>
           <li>
             <img
@@ -143,7 +149,10 @@ const DropDown = ({ items, profileDD, setProfileDD }: props) => {
           </ul>
           <hr />
           <ul>
-            <li className="drop__li">Settings</li>
+            <li className="drop__li">
+              <img src={settingIcon} alt="" />
+              <span>Settings</span>
+            </li>
             <li
               className="drop__li"
               onClick={() => {
@@ -151,7 +160,8 @@ const DropDown = ({ items, profileDD, setProfileDD }: props) => {
                 signOutUser();
               }}
             >
-              Log Out
+              <img src={logoutIcon} alt="" />
+              <span>Log out</span>
             </li>
           </ul>
         </div>

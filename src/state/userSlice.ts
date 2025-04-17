@@ -1,29 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { User } from "firebase/auth";
-import { UserInfo } from "firebase/auth";
-const initialState: User | null = {
-  uid: "", // Unique ID
-  email: "", // User's email
-  displayName: "", // User's name
-  photoURL: "", // Profile picture
-  emailVerified: false, // Is email verified
-  phoneNumber: "", // If phone number is used
-  providerData: [] as UserInfo[], // Auth providers info
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface User {
+  uid: string;
+  email: string;
+  displayName?: string;
+}
+
+const initialState: User = {
+  uid: "",
+  email: "",
+  displayName: "",
 };
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateDisplayName: (state, action) => {
-      state.displayName = action.payload.displayName;
+    updateDisplayName: (
+      state,
+      action: PayloadAction<{ displayName: string }>
+    ) => {
+      if (state) state.displayName = action.payload.displayName;
     },
     addUser: (state, action) => {
-      state.email = action.payload.email;
-      state.uid = action.payload.uid;
+      return action.payload;
     },
     removeUser: (state) => {
-      state.email = "";
-      state.uid = "";
+      return initialState;
     },
   },
 });

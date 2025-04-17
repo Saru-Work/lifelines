@@ -1,21 +1,40 @@
 import { useEffect, useRef, useState } from "react";
-import { auth } from "../../config/firebase";
+import { auth, db } from "../../config/firebase";
 import { updateProfile } from "firebase/auth";
 import "./EditForm.scss";
 import { updateDisplayName } from "../../state/userSlice";
-import { useDispatch } from "react-redux";
-import { validateFullname } from "../../utils/authValidate";
+import { useDispatch, useSelector } from "react-redux";
 import userIcon from "../../assets/icons/user.png";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { RootState } from "../../state/store";
 interface props {
   isOpen: boolean;
   setIsOpen: (state: boolean) => void;
 }
 const EditForm = ({ isOpen, setIsOpen }: props) => {
+  const userState = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const [fullName, setFullName] = useState(
     auth.currentUser?.displayName || "LifeLines User"
   );
   const nameRef = useRef(null);
+  const updateUserName = async (uid: string, newName: string) => {
+    const q = query(collection(db, "users"), where("uid", "==", uid));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (document) => {
+      const docRef = doc(db, "users", document.id);
+      await updateDoc(docRef, {
+        name: newName,
+      });
+    });
+  };
   const updateUserProfile = () => {
     if (!auth.currentUser) return;
     updateProfile(auth.currentUser, {
@@ -24,6 +43,7 @@ const EditForm = ({ isOpen, setIsOpen }: props) => {
     })
       .then(() => {
         dispatch(updateDisplayName({ displayName: fullName }));
+        updateUserName(userState.uid, fullName);
         console.log("Profile Updated");
       })
       .catch((error) => {
