@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./LandingPage.scss";
 import logo from "../../assets/logo/LIfeLines.png";
 import heroImg from "../../assets/pictures/hero.png";
@@ -7,13 +7,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { changeState } from "../../state/loginSlice";
 import { RootState } from "../../state/store";
 import LoginForm from "../../components/LoginForm/LoginForm";
+import LoadingBar from "../../components/LoadingBar/LoadingBar";
 const LandingPage = () => {
   const [whatsClicked, setWhatsClicked] = useState<null | string>(null);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const loginState = useSelector((state: RootState) => state.login.isOpen);
   const [isLogin, setIsLogin] = useState(false);
   return (
     <div className="home__page">
+      <LoadingBar loading={loading} />
       <div className="nav__bar">
         <div className="left">
           <img className="logo__img" src={logo} alt="" />
@@ -36,6 +39,7 @@ const LandingPage = () => {
                 setIsLogin(true);
                 setWhatsClicked("Welcome back.");
               }}
+              className="sign__in__btn"
             >
               Sign In
             </li>
@@ -58,6 +62,7 @@ const LandingPage = () => {
           <h1>Stories that </h1>
           <h1>Matter,</h1>
           <h1>Ideas that shine</h1>
+          <h1 className="whole">Stories that Matter,Ideas that shine</h1>
           <p>Read stories, write your own, and explore new ideas.</p>
           <button
             onClick={() => {
@@ -74,6 +79,7 @@ const LandingPage = () => {
       </div>
       {/* {loginState && <LoginForm />} */}
       <LoginForm
+        setLoading={setLoading}
         isLogin={isLogin}
         setIsLogin={setIsLogin}
         whatsClicked={whatsClicked}

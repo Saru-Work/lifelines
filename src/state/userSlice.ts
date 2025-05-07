@@ -4,6 +4,7 @@ interface User {
   uid: string;
   email: string;
   displayName?: string;
+  photoURL?: any;
 }
 
 const initialState: User = {
@@ -15,11 +16,17 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateDisplayName: (
+    updateUserConfig: (
       state,
-      action: PayloadAction<{ displayName: string }>
+      action: PayloadAction<{
+        displayName: string;
+        photoURL: any;
+      }>
     ) => {
-      if (state) state.displayName = action.payload.displayName;
+      if (state) {
+        state.displayName = action.payload.displayName;
+        state.photoURL = action.payload.photoURL;
+      }
     },
     addUser: (state, action) => {
       return action.payload;
@@ -30,5 +37,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUser, removeUser, updateDisplayName } = userSlice.actions;
+export const { addUser, removeUser, updateUserConfig } = userSlice.actions;
 export default userSlice.reducer;

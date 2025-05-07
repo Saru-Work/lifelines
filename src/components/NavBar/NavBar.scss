@@ -45,6 +45,13 @@
             width: 28px;
             color: variables.$secondary-color;
         }
+        .user__icon{
+            width: 33px;
+            height: 33px;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 50%;
+        }
         .user{
             position: relative;
             cursor: pointer;
@@ -62,6 +69,7 @@
     font-weight: thin;
     width: 200px;
     padding: 20px;
+    z-index: 100;
     ul{
         width: 100%;
         list-style: none;

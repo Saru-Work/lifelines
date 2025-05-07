@@ -1,0 +1,50 @@
+.author__page{
+    .hero{
+        display: flex;
+        .content{
+            flex: 3;
+            border-right: 1px solid #ccc;
+            min-height: calc(100vh - 55px);
+            padding: 50px;
+
+            .stories__heading{
+                font-size: 3rem;
+                color: #22AF22;
+            }
+            .stories__list{
+                list-style: none;
+
+                li{
+                    border-bottom: 1px solid #ccc;
+                    padding: 20px 0;
+                }
+            }
+        }
+        .profile{
+            flex: 1;
+            padding: 50px;
+            
+            .author__name{
+                font-weight: 600;
+            }
+    
+            .author__pic{
+                width: 80px;
+                height: 80px;
+                overflow: hidden;
+                .profile__pic{
+                    width: 80px;
+                    height: 80px;
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+            }
+            .author__bio{
+                font-size: 0.9rem;
+                color: #666666;
+            }
+        }
+    }
+    
+    
+}

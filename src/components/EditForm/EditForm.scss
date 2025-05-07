@@ -17,6 +17,7 @@
     opacity: 0;
     visibility: hidden;
 
+    
     &.show{
         transform: scale(1);
         opacity: 1;
@@ -41,10 +42,17 @@
         }
         .photo__line{
             display: flex;
-
-            // .profile__picture{
-                // width: 80px;
-            // }
+            .profile__frame{
+                width: 80px;
+                min-width: 80px;
+                height: 80px;
+                overflow: hidden;
+                border-radius: 50%;
+            }
+            .profile__picture{
+                width: 80px;
+                
+            }
             .btn{
                 background-color: transparent;
                 border: none;
@@ -56,6 +64,9 @@
             }
             .update__btn{
                 color: #258f22;
+            }
+            .update__input{
+                display: none;
             }
             p{
                 font-size: 0.8rem;
@@ -117,6 +128,7 @@
                 border: 1px solid #258f22;
                 color: white;
             }
+            
         }
     }
 }

@@ -14,18 +14,20 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 interface props {
   whatsClicked: string | null;
   isLogin: boolean;
   setIsLogin: (state: boolean) => void;
+  setLoading: (state: boolean) => void;
 }
 
 const registerUser = async (uid: string, email: string | null) => {
   const userData = {
+    photoURL: "",
     name: "LifeLines user",
     email: email,
     uid: uid,
-    profilePicture: "",
     bio: "",
     blogs: [],
   };
@@ -37,7 +39,13 @@ const registerUser = async (uid: string, email: string | null) => {
   }
 };
 
-const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
+const LoginForm = ({
+  whatsClicked,
+  isLogin,
+  setIsLogin,
+  setLoading,
+}: props) => {
+  const navigate = useNavigate();
   const [isShowing, setIsShowing] = useState({
     password: false,
     cPassword: false,
@@ -46,6 +54,7 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
   const dispatch = useDispatch();
   const loginState = useSelector((state: RootState) => state.login.isOpen);
   const userState = useSelector((state: RootState) => state.user);
+  const [submited, setSubmited] = useState(false);
 
   const checkConfirmPassword = () => {
     return userCredentials.password != userCredentials.confirmPassword;
@@ -72,9 +81,11 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
             email: user.user.email,
             uid: user.user.uid,
             displayName: user.user.displayName,
+            photoURL: user.user.photoURL,
           })
         );
         dispatch(changeState(loginState));
+        navigate("/feed");
         console.log(user.user);
       })
       .catch((err) => {
@@ -92,6 +103,7 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
         dispatch(addUser({ email: user.user.email, uid: user.user.uid }));
         dispatch(changeState(loginState));
         registerUser(user.user.uid, user.user.email);
+        navigate("/feed");
       })
       .catch((err) => {
         console.log(err.message);
@@ -115,6 +127,8 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          setLoading(true);
+          setSubmited(true);
           const newErrors = {
             emailError: "",
             passwordError: "",
@@ -226,11 +240,13 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
         )}
         {isLogin ? (
           <button type="submit" className="sign__btn">
-            Sign In
+            <div className={`loader ${submited ? " spinning" : null}`}></div>
+            <div>Sign In</div>
           </button>
         ) : (
           <button type="submit" className="sign__btn">
-            Sign Up
+            <div className={`loader ${submited ? " spinning" : null}`}></div>
+            <div>Sign Up</div>
           </button>
         )}
         {isLogin ? (
@@ -256,6 +272,15 @@ const LoginForm = ({ whatsClicked, isLogin, setIsLogin }: props) => {
             </span>
           </p>
         )}
+        <button
+          onClick={() => {
+            dispatch(changeState(loginState));
+          }}
+          type="button"
+          className="close__btn"
+        >
+          x
+        </button>
       </form>
     </div>
   );

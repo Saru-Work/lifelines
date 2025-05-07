@@ -17,11 +17,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../state/store";
 import settingIcon from "../../assets/icons/settings.svg";
 import logoutIcon from "../../assets/icons/signout.svg";
-const NavBar = () => {
+const NavBar = ({
+  filterStories,
+}: {
+  filterStories: (state: string) => void;
+}) => {
   const dispatch = useDispatch();
   const userState = useSelector((state: RootState) => state.user);
   const [profileDD, setProfileDD] = useState(false);
   const navigate = useNavigate();
+  const [searchInput, setSearchInput] = useState("");
 
   interface profileItemsInterface {
     content: string;
@@ -48,12 +53,19 @@ const NavBar = () => {
   return (
     <div className="nav__bar">
       <div className="left">
-        <Link to="/">
+        <Link to="/feed">
           <img className="logo__img" src={logo} alt="" />
         </Link>
         <div>
           <img className="search__icon" src={searchIcon} alt="" />
-          <input type="text" placeholder="Search" />
+          <input
+            type="text"
+            placeholder="Search"
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+              filterStories(searchInput);
+            }}
+          />
         </div>
       </div>
       <nav>
@@ -64,11 +76,7 @@ const NavBar = () => {
             </Link>
           </li>
           <li>
-            <img
-              className="notification__icon icon"
-              src={notificationIcon}
-              alt=""
-            />
+            <img className="notification__icon icon" src={notificationIcon} />
           </li>
           <li className="user">
             <DropDown
@@ -81,7 +89,7 @@ const NavBar = () => {
                 setProfileDD(true);
               }}
               className="icon user__icon"
-              src={userIcon}
+              src={userState.photoURL || userIcon}
               alt=""
             />
           </li>
@@ -101,6 +109,7 @@ interface props {
 }
 
 const DropDown = ({ items, profileDD, setProfileDD }: props) => {
+  const navigate = useNavigate();
   const dropDownRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     function closeDropDown(e: MouseEvent | any) {
@@ -158,6 +167,7 @@ const DropDown = ({ items, profileDD, setProfileDD }: props) => {
               onClick={() => {
                 dispatch(removeUser());
                 signOutUser();
+                navigate("/");
               }}
             >
               <img src={logoutIcon} alt="" />

@@ -1,34 +1,23 @@
 @use "../../styles/variables";
 @import url('https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap');
 .feed{
+    .feed__hero{
+        display: flex;
+    }
+    .right{
+        flex: 4;
+    }
+    .left{
+        flex: 1;
+    }
     .stories{
         font-family: "Gelasio", serif;
-        padding: 100px;
+        padding: 30px 100px;
         ul{
             li{
                 padding: 30px 50px 30px 0;
                 list-style: none;
                 border-bottom: 1px solid #ccc;
-                .story__title{
-                    font-size: 1.5rem;
-                }
-                .story__content{
-                    color: variables.$secondary-color;
-                }
-                .action__btn__container{
-                    display: flex;
-                    align-items: center;
-                    gap: 20px;
-                    .like__container,.comment__container{
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                        cursor: pointer;
-                    }
-                }
-                .action__btn{
-                    width: 20px;
-                }
             }
         }
     }

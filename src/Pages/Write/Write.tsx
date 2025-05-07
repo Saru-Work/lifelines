@@ -66,7 +66,7 @@ const Write = () => {
     <div className="write__page">
       <nav>
         <div className="left">
-          <Link to="/">
+          <Link to="/feed">
             <img src={LogoImg} alt="" />
           </Link>
           <p className="name">{userState.displayName}</p>
@@ -90,7 +90,7 @@ const Write = () => {
                 setProfileDD(true);
               }}
               className="profile__picture"
-              src={ProfilePicture}
+              src={userState.photoURL || ProfilePicture}
             />
             <DropDown
               items={profileDropDownItems}

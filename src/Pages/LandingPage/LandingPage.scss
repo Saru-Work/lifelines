@@ -22,11 +22,20 @@
             .write__icon{
                 margin-top: 4px;
                 width: 28px;
+
+                @media (max-width: 576px) {
+                    display: none;
+                }
             }
             li{
                 font-weight: 500;
                 color: variables.$secondary-color;
                 cursor: pointer;
+            }
+            .sign__in__btn{
+                @media (max-width: 576px) {
+                    display: none;
+                }
             }
     
             button{
@@ -40,6 +49,10 @@
                 color: white;
             }
         }
+        @media (max-width: 576px) {
+            padding-right: 10px;
+        padding-left: 20px;
+        }
     }
     
     .hero{
@@ -51,6 +64,27 @@
             font-size: 5.5rem;
             width: 620px;
             color: variables.$secondary-color;
+
+            @media (max-width: 1200px) {
+                font-size: 4.5rem;
+            }
+            @media (max-width: 1100px){
+                font-size: 3.5rem;
+            }
+            @media (max-width: 1000px) {
+                font-size: 3rem;
+                width: max-content;
+                display: none;
+            }
+        }
+        .whole{
+            display: none;
+            width: 100%;
+            @media (max-width: 1000px) {
+                display: block;
+                font-size: 3rem;
+                line-height: 70px;
+            }
         }
         p{
             font-size: 1.5rem;
@@ -66,6 +100,30 @@
             border-radius: 20px;
             color: white;
             margin-top: 20px;
+        }
+        .left{
+            img{
+                min-width: 300px;
+                max-width: 100%;
+            }
+        }
+        .right{
+            @media (max-width: 1000px) {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        @media (max-width: 1000px) {
+            flex-direction: column-reverse;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 576px) {
+            align-items: start;
+            justify-content: start;
+            padding: 20px;
         }
     }
 }

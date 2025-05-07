@@ -25,6 +25,7 @@
 
     form{
         padding: 50px;
+        position: relative;
         display: flex;
         gap: 20px;
         flex-direction: column;
@@ -33,7 +34,16 @@
         background-color: white;
         height: 100%;
         box-shadow: 1px 1px 10px 2px #e2e2e2;
-
+        .close__btn{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            background-color: transparent;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border: none;
+        }
         h1{
             color: variables.$secondary-color;
         }
@@ -67,6 +77,9 @@
                 
                 &:focus::placeholder {
                     color: transparent;
+                }
+                @media (max-width: 800px) {
+                    width: 280px;
                 }
             }
             .show__password__btn{
@@ -109,8 +122,15 @@
                 position: absolute;
                 left: 10px;
             }
+            @media (max-width: 800px) {
+                width: 280px;
+            }
         }
         .sign__btn{
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
             font-family: "Inter", sans-serif;
             background-color: variables.$primary-color;
             cursor: pointer;
@@ -121,6 +141,42 @@
             color: white;
             width: 340px;
             margin-bottom: 20px;
+            position: relative;
+            @media (max-width: 800px) {
+                width: 280px;
+            }
+              
+        }
+        @media (max-width: 640px) {
+            width: 100%;
         }
     }
+}
+
+.loader {
+    width: 0px;
+    height: 0px;
+    min-height: 0px;
+    background-color: transparent;
+    border: 0px solid white;
+    border-bottom: 3px solid transparent;
+    border-radius: 50%;
+    transition: all 0.2s ease-out;
+}
+.spinning{
+    width: 16px;
+    height: 16px;
+    border: 3px solid white;
+    border-bottom: 3px solid transparent;
+    min-height: 16px;
+    animation: spin 0.5s ease-in-out infinite;
+}
+@keyframes spin {
+0% {
+    transform: rotate(0deg);
+}
+
+100% {
+    transform: rotate(360deg);
+}
 }

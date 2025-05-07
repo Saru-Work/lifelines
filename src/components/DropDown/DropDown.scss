@@ -1,0 +1,24 @@
+.option__dropdown {
+    position: absolute;
+    top: 100%;        
+    right: 0;         
+    width: 120px;
+    background-color: white;
+    padding: 10px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px 2px #e2e2e2;
+    z-index: 50;
+    
+    .options__li {
+        padding: 10px 0;
+        cursor: pointer;
+        border-radius: 4px;
+        padding-left: 10px;
+
+        &:hover {
+            background-color: #f1f1f1;
+        }
+    }
+}
