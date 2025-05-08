@@ -104,6 +104,15 @@ const Profile = () => {
           </p>
         </div>
       </section>
+      <button
+        onClick={() => {
+          setIsOpen(true);
+        }}
+        type="button"
+        className="edit__button"
+      >
+        Edit Profile
+      </button>
       <EditForm isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );

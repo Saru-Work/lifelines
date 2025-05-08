@@ -200,6 +200,15 @@ const EditForm = ({ isOpen, setIsOpen }: props) => {
             Save
           </button>
         </div>
+        <button
+          onClick={() => {
+            setIsOpen(false);
+          }}
+          type="button"
+          className="close__btn"
+        >
+          x
+        </button>
       </form>
     </div>
   );
