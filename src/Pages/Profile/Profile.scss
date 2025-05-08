@@ -9,6 +9,10 @@
         .right{
             padding: 50px;
             flex: 1;
+
+            @media (max-width: 650px) {
+                padding: 20px;
+            }
             .profile__image{
                 width: 80px;
                 height: 80px;
@@ -41,6 +45,10 @@
                         border-bottom: 1px solid #ccc;
                     }
                 }
+            }
+
+            @media (max-width: 800px) {
+                padding: 50px 50px;
             }
         }
         

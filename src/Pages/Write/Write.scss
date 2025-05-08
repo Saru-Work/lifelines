@@ -6,7 +6,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-inline: 100px;
+        padding: 10px 100px;
+        border-bottom: 1px solid #cccc;
+
+        @media (max-width: 700px) {
+            padding-inline: 50px;
+        }
 
         .right,.left{
             display: flex;
@@ -19,6 +24,10 @@
                 font-size: 0.9rem;
                 font-weight: 600;
                 color: variables.$secondary-color;
+
+                @media (max-width: 600px) {
+                    display: none;
+                }
             }
         }
         .right{
@@ -64,6 +73,12 @@
     .story__area{
         padding-top: 50px;
         padding-inline: 200px;
+        @media (max-width: 900px) {
+            padding-inline: 100px;
+        }
+        @media (max-width: 580px) {
+            padding-inline: 50px;
+        }
         .title__area{
             position: relative;
 

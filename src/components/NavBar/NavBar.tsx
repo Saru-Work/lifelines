@@ -54,6 +54,7 @@ const NavBar = ({ filterStories }: { filterStories: any }) => {
         <div>
           <img className="search__icon" src={searchIcon} alt="" />
           <input
+            className="search__bar"
             type="text"
             placeholder="Search"
             onChange={(e) => {

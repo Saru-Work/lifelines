@@ -27,7 +27,6 @@ const Feed = () => {
     });
     setStories(filteredStories);
   };
-
   useEffect(() => {
     const getStories = async () => {
       const querySnapshot = await getDocs(collection(db, "stories"));
@@ -70,7 +69,58 @@ const Feed = () => {
             </ul>
           </div>
         </div>
-        <div className="left"></div>
+        <div className="left__area">
+          <h1>LifeLines</h1>
+          <p>
+            LifeLines is a personal blog app designed to share stories,
+            experiences, and insights on various aspects of life. With a clean
+            and user-friendly interface, it allows users to write and explore
+            articles on topics ranging from personal growth and relationships to
+            travel and hobbies.
+          </p>
+          <p>
+            LifeLines aims to create a space for self-expression, connection,
+            and inspiration, where every story adds a unique line to the
+            collective journey of life.
+          </p>
+
+          <ul>
+            <li>
+              <h3>Personalized Content</h3>
+              <p>
+                LifeLines allows users to create and share their own stories and
+                experiences, making it a personal space for self-expression.
+                From personal growth to hobbies, users can write about anything
+                that resonates with them.
+              </p>
+            </li>
+            <li>
+              <h3>User-Friendly Interface</h3>
+              <p>
+                The app offers an intuitive and simple design, making it easy
+                for anyone to navigate, whether they’re writing a post or
+                browsing through others’ stories.
+              </p>
+            </li>
+            <li>
+              <h3>Post Creation & Editing</h3>
+              <p>
+                LifeLines enables users to write, edit, and update their posts
+                at any time. This flexibility empowers writers to keep their
+                content up-to-date or add new thoughts as they grow and evolve.(
+                Editing is coming soon)
+              </p>
+            </li>
+            <li>
+              <h3>Interactive Community</h3>
+              <p>
+                The app encourages interaction by allowing users to comment on,
+                like, and share stories. This fosters a sense of community and
+                connection among readers and writers.
+              </p>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );

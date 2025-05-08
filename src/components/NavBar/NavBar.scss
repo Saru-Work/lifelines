@@ -4,6 +4,8 @@
     align-items: center;
     justify-content: space-between;
     padding-inline: 60px;
+    height: 60px;
+    background-color: white;
     padding-block: 5px;
     border-bottom: 1px solid #ccc;
     .left{
@@ -11,12 +13,17 @@
         gap: 20px;
         align-items: center;
 
-        input{
+        .search__bar{
             padding: 13px 20px 13px 50px;
             background-color: #f9f9f9;
             border-radius: variables.$primary-border-radius;
             border: none;
             outline: none;
+
+            @media (max-width: 650px) {
+                display: none;
+            }
+            
         }
         div{
             position: relative;
@@ -28,6 +35,9 @@
             top: 50%;
             left: 17px;
             transform: translateY(-50%);
+            @media (max-width: 650px) {
+                display: none;
+            }
         }
     }
     .logo__img{
