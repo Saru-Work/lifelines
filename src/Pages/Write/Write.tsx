@@ -21,7 +21,6 @@ const Write = () => {
   const [contentText, setContentText] = useState("");
   const contentRef = useRef<HTMLParagraphElement>(null);
   const userState = useSelector((state: RootState) => state.user);
-  const [data, setData] = useState(0);
   const [profileDD, setProfileDD] = useState(false);
   const [openPublish, setOpenPublish] = useState(false);
   interface profileItemsInterface {

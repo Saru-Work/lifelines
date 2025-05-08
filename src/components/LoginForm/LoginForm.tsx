@@ -53,7 +53,6 @@ const LoginForm = ({
   const formContainerRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch();
   const loginState = useSelector((state: RootState) => state.login.isOpen);
-  const userState = useSelector((state: RootState) => state.user);
   const [submited, setSubmited] = useState(false);
 
   const checkConfirmPassword = () => {
@@ -70,27 +69,38 @@ const LoginForm = ({
     confirmPasswordError: "",
   });
   const signInUser = () => {
-    signInWithEmailAndPassword(
-      auth,
-      userCredentials.email,
-      userCredentials.password
-    )
-      .then((user) => {
-        dispatch(
-          addUser({
-            email: user.user.email,
-            uid: user.user.uid,
-            displayName: user.user.displayName,
-            photoURL: user.user.photoURL,
-          })
-        );
-        dispatch(changeState(loginState));
-        navigate("/feed");
-        console.log(user.user);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    try {
+      signInWithEmailAndPassword(
+        auth,
+        userCredentials.email,
+        userCredentials.password
+      )
+        .then((user) => {
+          dispatch(
+            addUser({
+              email: user.user.email,
+              uid: user.user.uid,
+              displayName: user.user.displayName,
+              photoURL: user.user.photoURL,
+            })
+          );
+          dispatch(changeState(loginState));
+          navigate("/feed");
+          console.log(user.user);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          const newError = {
+            ...errors,
+            emailError: "",
+            passwordError: "Password and Email didn't match!",
+          };
+          setErrors(newError);
+          setSubmited(false);
+        });
+    } catch (err: any) {
+      console.log(err.message);
+    }
   };
 
   const createUser = () => {
@@ -127,21 +137,29 @@ const LoginForm = ({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          setLoading(true);
           setSubmited(true);
+          setLoading(true);
           const newErrors = {
             emailError: "",
             passwordError: "",
             confirmPasswordError: "",
           };
-          if (!validatePassword(userCredentials.password))
+          if (!validatePassword(userCredentials.password)) {
             newErrors.passwordError = "Not a valid password";
+            setSubmited(false);
+          }
+
           if (!validateEmail(userCredentials.email)) {
             newErrors.emailError = "Not a valid email";
+            setSubmited(false);
           }
+          console.log(newErrors);
+          setErrors(newErrors);
           if (!isLogin) {
-            if (checkConfirmPassword())
+            if (checkConfirmPassword()) {
               newErrors.confirmPasswordError = "Passwords didn't match";
+              setSubmited(false);
+            }
             setErrors(newErrors);
             if (
               newErrors.emailError == "" &&
@@ -184,7 +202,7 @@ const LoginForm = ({
           <p className="password__error error">{errors.passwordError}</p>
           <button
             type="button"
-            onClick={(e) => {
+            onClick={() => {
               setIsShowing({ ...isShowing, password: !isShowing.password });
             }}
             className="show__password__btn"

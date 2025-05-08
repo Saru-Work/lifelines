@@ -20,7 +20,6 @@ interface props {
 }
 const EditForm = ({ isOpen, setIsOpen }: props) => {
   const [image, setImage] = useState();
-  const [pending, setPending] = useState(false);
   const userState = useSelector((state: RootState) => state.user);
   const [imgUrl, setImgUrl] = useState<any>(userState.photoURL || userIcon);
   const nameRef = useRef(null);
@@ -36,7 +35,6 @@ const EditForm = ({ isOpen, setIsOpen }: props) => {
 
   const uploadPicture = async () => {
     if (image) {
-      setPending(true);
       const data = new FormData();
       data.append("file", image);
       data.append("upload_preset", "blog_app_profiles");
@@ -68,8 +66,6 @@ const EditForm = ({ isOpen, setIsOpen }: props) => {
         setIsOpen(false);
       } catch (err: any) {
         console.error("Upload or update failed:", err.message);
-      } finally {
-        setPending(false);
       }
     } else {
       await updateProfile(auth.currentUser!, {

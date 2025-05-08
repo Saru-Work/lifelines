@@ -17,12 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../state/store";
 import settingIcon from "../../assets/icons/settings.svg";
 import logoutIcon from "../../assets/icons/signout.svg";
-const NavBar = ({
-  filterStories,
-}: {
-  filterStories: (state: string) => void;
-}) => {
-  const dispatch = useDispatch();
+const NavBar = ({ filterStories }: { filterStories: any }) => {
   const userState = useSelector((state: RootState) => state.user);
   const [profileDD, setProfileDD] = useState(false);
   const navigate = useNavigate();

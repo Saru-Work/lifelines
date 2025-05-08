@@ -50,7 +50,7 @@ const AuthorPage = () => {
   };
   return (
     <div>
-      <NavBar />
+      <NavBar filterStories={() => {}} />
       <LoadingBar loading={loading} />
       {!author ? (
         <div></div>

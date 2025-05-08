@@ -14,7 +14,6 @@ import { auth, db } from "../../config/firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import userIcon from "../../assets/icons/user.png";
-import FakeStory from "../../components/FakeStory/FakeStory";
 import Story from "../../components/Story/Story";
 import Shimmer from "../../components/Shimmer/Shimmer";
 interface story {
@@ -38,7 +37,7 @@ const Profile = () => {
       console.log("fail");
     }
   };
-  const list: { name: string; handleClick: () => void }[] = [
+  const list: { name: string; handleClick: (state: string) => void }[] = [
     { name: "Delete", handleClick: deleteStory },
     { name: "Update", handleClick: () => {} },
   ];
@@ -58,7 +57,7 @@ const Profile = () => {
   }, [userState]);
   return (
     <div className="profile">
-      <NavBar />
+      <NavBar filterStories={() => {}} />
       <section className="content">
         <div className="left">
           <h1 className="name">{userState.displayName}</h1>

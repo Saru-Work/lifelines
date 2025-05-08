@@ -104,7 +104,7 @@ const StoryPage = () => {
   return (
     <div className="story__page">
       <LoadingBar loading={loading} />
-      <NavBar filterStories={(input: string) => {}} />
+      <NavBar filterStories={() => {}} />
       {story && userData ? (
         <div className="hero">
           <div className="profile__container">

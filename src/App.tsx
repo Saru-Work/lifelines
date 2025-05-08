@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Profile from "./Pages/Profile/Profile";
 import { useSelector } from "react-redux";
@@ -20,7 +20,6 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in
         dispatch(
           addUser({
             uid: user.uid,
@@ -31,7 +30,6 @@ function App() {
         );
         console.log(user);
       } else {
-        // No user signed in
         dispatch(
           addUser({
             uid: "",
