@@ -49,6 +49,7 @@ const Feed = () => {
       <NavBar filterStories={filterStories} />
       <div className="feed__hero">
         <div className="right">
+          <h2 className="foryou">For You</h2>
           <div className="stories">
             <ul>
               {stories.length !== 0

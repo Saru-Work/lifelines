@@ -1,12 +1,19 @@
 .author__page{
     .hero{
         display: flex;
+
+        @media (max-width: 700px) {
+            flex-direction: column-reverse;
+            
+        }
         .content{
             flex: 3;
             border-right: 1px solid #ccc;
             min-height: calc(100vh - 55px);
             padding: 50px;
-
+            @media (max-width: 700px) {
+                padding: 20px;
+            }
             .stories__heading{
                 font-size: 3rem;
                 color: #22AF22;
@@ -23,7 +30,10 @@
         .profile{
             flex: 1;
             padding: 50px;
-            
+            @media (max-width: 700px) {
+                padding: 20px;
+                padding-bottom: 0;
+            }
             .author__name{
                 font-weight: 600;
             }

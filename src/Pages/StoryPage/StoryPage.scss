@@ -5,8 +5,17 @@
     .hero{
         padding: 30px 70px;
 
-        .profile__container{
+        @media (max-width: 650px) {
+            padding: 30px 50px;
+        }
+        @media (max-width: 600px) {
+            padding: 30px 20px;
+        }
+
+
+        .story__profile__container{
             width: 100%;
+            text-decoration: none;
             .nameandphoto{
                 padding: 10px 0px;
                 display: flex;
@@ -14,20 +23,23 @@
                 gap: 10px;
                 border-bottom: 1px solid #cccccc;
                 width: 100%;
-                text-decoration:none;
-                .author__picture{
+                .story__author__picture{
                     width: 40px;
                     height: 40px;
                     border-radius: 50%;
                 }
-                .author__name{
+                .story__author__name{
                     font-weight: 500;
                     color: black;
-                    
                 }
-                .author__name:hover{
-                    text-decoration: underline black;
-                }
+
+            }
+            .link{
+                text-decoration: none;
+            }
+            .link:hover{
+                text-decoration: underline;
+                text-decoration-color: black;
             }
         }
     }
@@ -36,6 +48,9 @@
         .title{
             font-family: 'Roboto', sans-serif;
             color: #3a3a3a;
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 10px;
         }
         .buttons{
             .like__btn__container{

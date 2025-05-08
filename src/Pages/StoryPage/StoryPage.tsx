@@ -107,15 +107,22 @@ const StoryPage = () => {
       <NavBar filterStories={() => {}} />
       {story && userData ? (
         <div className="hero">
-          <div className="profile__container">
-            <Link to={"/author/" + userData.uid}>
+          <div className="story__profile__container">
+            <Link className="link" to={"/author/" + userData.uid}>
               <div className="nameandphoto">
                 <img
-                  className="author__picture"
+                  className="story__author__picture"
                   src={userData.photoURL}
                   alt=""
                 />
-                <p className="author__name">{userData.name}</p>
+                <p
+                  style={{
+                    textDecoration: "none",
+                  }}
+                  className="story__author__name"
+                >
+                  {userData.name}
+                </p>
               </div>
             </Link>
           </div>
