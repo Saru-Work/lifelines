@@ -49,6 +49,42 @@
                 text-decoration-color: black;
             }
         }
+
+        .comment__input__area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            .comment__input {
+                width: 500px;
+                font-family: "Roboto", sans-serif;
+                border: none;
+                border-bottom: 1px solid #ccc;
+                outline: none;
+                overflow: hidden;
+
+                &:focus{
+                    border-bottom: 1px solid black;
+                }
+            }
+
+
+            .comment__btn {
+                padding: 8px 20px;
+                background-color: rgb(33, 201, 75);
+                color: white;
+                font-family: "Roboto", sans-serif;
+                font-weight: 600;
+                border: 1px solid transparent;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 200ms ease;
+
+                &:hover {
+                    background-color: rgb(30, 165, 64);
+                }
+            }
+        }
     }
 
     .story__container {
@@ -114,6 +150,55 @@
                     transform: scale(1);
                 }
             }
+        }
+    }
+}
+
+.comment__frame {
+    margin-bottom: 10px;
+    padding-block: 5px;
+    position: relative;
+    max-width: 500px;
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 1px solid transparent;
+    gap: 10px;
+
+    &:hover{
+        border-color: #ccc;
+    }
+    .comment__pic__container {
+        .comment__pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+    }
+
+    .name__and__comment {
+        .comment__name {
+            font-size: 0.85rem;
+        }
+
+        .comment__content {
+            font-size: 0.95rem;
+            color: #5c5c5c;
+        }
+    }
+
+    .comment__delete__btn {
+        background-color: transparent;
+        cursor: pointer;
+        color: white;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 20px;
+
+        .trash__icon{
+            width: 20px;
         }
     }
 }

@@ -62,7 +62,6 @@ const EditForm = ({ isOpen, setIsOpen }: props) => {
         );
         await updateProfileConfig(userState.uid, fullName, result.secure_url);
 
-        console.log("Profile updated successfully!");
         setIsOpen(false);
       } catch (err: any) {
         console.error("Upload or update failed:", err.message);

@@ -122,13 +122,7 @@ const DropDown = ({ items, profileDD, setProfileDD }: props) => {
   }, []);
   const dispatch = useDispatch();
   const signOutUser = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("Sign Out Successfull");
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    signOut(auth).then().catch();
   };
   return (
     <>

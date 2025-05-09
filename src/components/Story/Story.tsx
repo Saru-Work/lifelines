@@ -19,6 +19,7 @@ const Story = ({
     photoUrl?: any;
     userId?: string;
     likes?: number;
+    comments?: number;
   }>({});
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   useEffect(() => {
@@ -32,6 +33,13 @@ const Story = ({
         story.docId,
         "likes"
       );
+      const commentCollectionRef = collection(
+        db,
+        "stories",
+        story.docId,
+        "comments"
+      );
+      const commentSnap = await getDocs(commentCollectionRef);
       const likedQuery = query(likesCollectionRef, where("liked", "==", true));
       const subSnap = await getDocs(likedQuery);
       const user: any = [];
@@ -45,6 +53,7 @@ const Story = ({
         photoUrl: user[0].photoURL,
         userId: id,
         likes: subSnap.size,
+        comments: commentSnap.size,
       });
     };
 
@@ -75,7 +84,7 @@ const Story = ({
           </div>
           <div className="comment__container">
             <span>💬</span>
-            <span>Comments</span>
+            <span>{data.comments}</span>
           </div>
         </div>
         <div className="options">

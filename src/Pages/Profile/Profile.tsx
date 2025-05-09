@@ -42,7 +42,6 @@ const Profile = () => {
     { name: "Update", handleClick: () => {} },
   ];
   const getMyStories = async () => {
-    console.log(auth);
     const storiesRef = collection(db, "stories");
     const q = query(storiesRef, where("uid", "==", userState.uid));
     const querySnapshot = await getDocs(q);

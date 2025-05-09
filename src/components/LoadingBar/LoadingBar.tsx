@@ -19,7 +19,6 @@ function LoadingBar({ loading }: { loading: boolean }) {
     } else {
       setWidth(100);
       setTimeout(() => {
-        // setWidth(0)
         setIsVisible(false);
       }, 300);
     }

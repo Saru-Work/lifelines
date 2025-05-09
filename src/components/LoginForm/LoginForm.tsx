@@ -33,7 +33,6 @@ const registerUser = async (uid: string, email: string | null) => {
   };
   try {
     const docRef = await addDoc(collection(db, "users"), userData);
-    console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -86,7 +85,6 @@ const LoginForm = ({
           );
           dispatch(changeState(loginState));
           navigate("/feed");
-          console.log(user.user);
         })
         .catch((err) => {
           console.log(err.message);
@@ -153,7 +151,6 @@ const LoginForm = ({
             newErrors.emailError = "Not a valid email";
             setSubmited(false);
           }
-          console.log(newErrors);
           setErrors(newErrors);
           if (!isLogin) {
             if (checkConfirmPassword()) {

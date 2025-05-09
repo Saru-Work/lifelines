@@ -56,11 +56,16 @@ const Write = () => {
         likes: 0,
         createdAt: Timestamp.now(),
       });
-      console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
+  function resetInputFields() {
+    if (titleRef.current && contentRef.current) {
+      titleRef.current.innerText = "";
+      contentRef.current.innerText = "";
+    }
+  }
   return (
     <div className="write__page">
       <nav>
@@ -137,6 +142,7 @@ const Write = () => {
       </section>
       {openPublish && (
         <PublishConfirm
+          resetInputFields={resetInputFields}
           setOpenPublish={setOpenPublish}
           storeStory={storeStory}
         />
@@ -170,14 +176,9 @@ const DropDown = ({ items, profileDD, setProfileDD }: props) => {
   }, []);
   const dispatch = useDispatch();
   const signOutUser = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("Sign Out Successfull");
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    signOut(auth).then().catch();
   };
+
   return (
     <>
       {profileDD && (
@@ -221,8 +222,13 @@ const DropDown = ({ items, profileDD, setProfileDD }: props) => {
 interface publishProps {
   setOpenPublish: (state: boolean) => void;
   storeStory: () => void;
+  resetInputFields: () => void;
 }
-const PublishConfirm = ({ setOpenPublish, storeStory }: publishProps) => {
+const PublishConfirm = ({
+  setOpenPublish,
+  storeStory,
+  resetInputFields,
+}: publishProps) => {
   const publishConfirmRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const closePublish = (e: MouseEvent | any) => {
@@ -252,6 +258,7 @@ const PublishConfirm = ({ setOpenPublish, storeStory }: publishProps) => {
             onClick={() => {
               storeStory();
               setOpenPublish(false);
+              resetInputFields();
             }}
           >
             Confirm

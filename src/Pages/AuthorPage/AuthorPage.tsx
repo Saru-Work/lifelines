@@ -23,12 +23,10 @@ const AuthorPage = () => {
       if (!authorId) return;
       const authorRef = doc(db, "users", authorId);
       const authSnap = await getDoc(authorRef);
-      console.log(authSnap);
       if (authSnap.exists()) {
         setAuthor(authSnap.data());
         getStories(authSnap.data().uid);
         setLoading(false);
-        console.log(authSnap.data());
       } else {
         console.log("Error");
       }
@@ -46,7 +44,6 @@ const AuthorPage = () => {
       stories.push({ ...doc.data(), docId: doc.id });
     });
     setStories(stories);
-    console.log(stories);
   };
   return (
     <div>
