@@ -1,7 +1,7 @@
 @use "../../styles/variables";
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
-.edit__form{
+.edit__form {
     font-family: "Inter", sans-serif;
     width: 100vw;
     height: 100vh;
@@ -11,19 +11,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255, 255, 255, 0.5);
     transition: all 100ms ease;
     transform: scale(0.7);
     opacity: 0;
     visibility: hidden;
     z-index: 2;
-    
-    &.show{
+
+    &.show {
         transform: scale(1);
         opacity: 1;
         visibility: visible;
     }
-    form{
+    form {
         position: relative;
         padding: 50px;
         display: flex;
@@ -42,7 +42,7 @@
         @media (max-width: 600px) {
             width: 100%;
         }
-        .close__btn{
+        .close__btn {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -52,41 +52,40 @@
             cursor: pointer;
             border: none;
         }
-        label{
+        label {
             margin-bottom: 10px;
             font-size: 0.8rem;
-            color:#707070;
+            color: #707070;
             display: block;
         }
-        .photo__line{
+        .photo__line {
             display: flex;
-            .profile__frame{
+            .profile__frame {
                 width: 80px;
                 min-width: 80px;
                 height: 80px;
                 overflow: hidden;
                 border-radius: 50%;
             }
-            .profile__picture{
+            .profile__picture {
                 width: 80px;
-                
             }
-            .btn{
+            .btn {
                 background-color: transparent;
                 border: none;
                 padding: 2px 10px;
                 cursor: pointer;
             }
-            .remove__btn{
+            .remove__btn {
                 color: #c94b4b;
             }
-            .update__btn{
+            .update__btn {
                 color: #258f22;
             }
-            .update__input{
+            .update__input {
                 display: none;
             }
-            p{
+            p {
                 font-size: 0.8rem;
                 padding-left: 10px;
                 color: #707070;
@@ -94,9 +93,9 @@
             }
         }
 
-        .input__container{
+        .input__container {
             width: 100%;
-            input{
+            input {
                 outline: none;
                 width: 100%;
                 padding: 10px;
@@ -104,49 +103,48 @@
                 background-color: #f2f2f2;
                 border-radius: 3px;
 
-                &:focus{
+                &:focus {
                     outline: 1px solid;
                 }
             }
-            textarea{
+            textarea {
                 box-sizing: border-box;
                 resize: none;
                 width: 100%;
                 padding: 10px;
-                font-family: "Inter",sans-serif;
+                font-family: "Inter", sans-serif;
                 border: none;
                 background-color: #f2f2f2;
                 border-radius: 3px;
                 outline: none;
-                &:focus{
+                &:focus {
                     outline: 1px solid;
                 }
             }
         }
 
-        .footer__btns{
+        .footer__btns {
             position: absolute;
-            bottom: 20px;
+            bottom: 50px;
             right: 50px;
             display: flex;
             gap: 10px;
 
-            .btn{
+            .btn {
                 padding: 8px 20px;
                 border-radius: 50px;
                 cursor: pointer;
             }
-            .cancel__btn{
+            .cancel__btn {
                 border: 1px solid #258f22;
                 background-color: white;
                 color: #258f22;
             }
-            .save__btn{
+            .save__btn {
                 background-color: #258f22;
                 border: 1px solid #258f22;
                 color: white;
             }
-            
         }
     }
 }
