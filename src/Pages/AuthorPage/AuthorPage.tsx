@@ -61,7 +61,7 @@ const AuthorPage = () => {
                   stories.map((story: any, i: number) => {
                     return (
                       <li className="author__story__list__item" key={i}>
-                        <Story list={[]} isProfile={true} story={story} />
+                        <Story list={[]} isProfile={true} storyDoc={story} />
                       </li>
                     );
                   })}

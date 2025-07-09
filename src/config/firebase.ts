@@ -1,15 +1,16 @@
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCn9ZG1nMqE_sI7K6hNiXp_5F_Z0rjFSgA",
-  authDomain: "ritehere-493fe.firebaseapp.com",
-  projectId: "ritehere-493fe",
-  storageBucket: "ritehere-493fe.firebasestorage.app",
-  messagingSenderId: "792327450172",
-  appId: "1:792327450172:web:ba88f1d360833f47cf1d39",
-  measurementId: "G-K1BP93J2WB",
+  apiKey: "AIzaSyCJufzDx6uksCIwZZ1t9PlimO3kdzZ0Aj8",
+  authDomain: "life-lines-48ce1.firebaseapp.com",
+  projectId: "life-lines-48ce1",
+  storageBucket: "life-lines-48ce1.firebasestorage.app",
+  messagingSenderId: "348162954204",
+  appId: "1:348162954204:web:36f0dbfab2c183bf24f519",
+  measurementId: "G-JY46947F99",
 };
 
 // Initialize Firebase

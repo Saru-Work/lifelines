@@ -1,150 +1,184 @@
 @use "../../styles/variables";
+@use "sass:color";
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 .edit__form {
-    font-family: "Inter", sans-serif;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
+  font-family: "Inter", sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.7);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 200ms ease;
+  z-index: 2;
+
+  &.show {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  form {
+    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.5);
-    transition: all 100ms ease;
-    transform: scale(0.7);
-    opacity: 0;
-    visibility: hidden;
-    z-index: 2;
+    gap: 20px;
+    width: 50%;
+    height: 100%;
+    padding: 50px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 
-    &.show {
-        transform: scale(1);
-        opacity: 1;
-        visibility: visible;
+    @media (max-width: 750px) {
+      width: 70%;
     }
-    form {
-        position: relative;
-        padding: 50px;
-        display: flex;
-        gap: 20px;
-        flex-direction: column;
-        align-items: center;
-        width: 50%;
+
+    @media (max-width: 600px) {
+      width: 100%;
+    }
+
+    .close__btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #555;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: #707070;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .photo__line {
+      display: flex;
+      align-items: center;
+
+      .profile__frame {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .profile__picture {
+        width: 100%;
+        height: auto;
+      }
+
+      .btn {
+        background: transparent;
+        border: none;
+        padding: 4px 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: color 0.2s;
+      }
+
+      .remove__btn {
+        color: #c94b4b;
+
+        &:hover {
+          color: color.scale(#c94b4b, $lightness: -10%);
+        }
+      }
+
+      .update__btn {
+        color: #258f22;
+
+        &:hover {
+          color: color.scale(#258f22, $lightness: -10%);
+        }
+      }
+
+      .update__input {
+        display: none;
+      }
+
+      p {
+        font-size: 0.8rem;
+        color: #707070;
+        padding-left: 10px;
+        font-weight: 400;
+      }
+    }
+
+    .input__container {
+      width: 100%;
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        background-color: #f2f2f2;
+        border: none;
+        border-radius: 4px;
+        font-family: "Inter", sans-serif;
+        font-size: 0.95rem;
+        outline: none;
+
+        &:focus {
+          outline: 1px solid variables.$primary-color;
+        }
+      }
+
+      textarea {
+        resize: none;
+        box-sizing: border-box;
+      }
+    }
+
+    .footer__btns {
+      position: absolute;
+      bottom: 50px;
+      right: 50px;
+      display: flex;
+      gap: 10px;
+
+      .btn {
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 500;
+        font-family: inherit;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .cancel__btn {
         background-color: white;
-        height: 100%;
-        box-shadow: 1px 1px 10px 2px #e2e2e2;
+        border: 1px solid #258f22;
+        color: #258f22;
 
-        @media (max-width: 750px) {
-            width: 70%;
+        &:hover {
+          background-color: color.scale(#258f22, $lightness: 40%);
         }
+      }
 
-        @media (max-width: 600px) {
-            width: 100%;
-        }
-        .close__btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 100;
-            background-color: transparent;
-            font-size: 1.5rem;
-            cursor: pointer;
-            border: none;
-        }
-        label {
-            margin-bottom: 10px;
-            font-size: 0.8rem;
-            color: #707070;
-            display: block;
-        }
-        .photo__line {
-            display: flex;
-            .profile__frame {
-                width: 80px;
-                min-width: 80px;
-                height: 80px;
-                overflow: hidden;
-                border-radius: 50%;
-            }
-            .profile__picture {
-                width: 80px;
-            }
-            .btn {
-                background-color: transparent;
-                border: none;
-                padding: 2px 10px;
-                cursor: pointer;
-            }
-            .remove__btn {
-                color: #c94b4b;
-            }
-            .update__btn {
-                color: #258f22;
-            }
-            .update__input {
-                display: none;
-            }
-            p {
-                font-size: 0.8rem;
-                padding-left: 10px;
-                color: #707070;
-                font-weight: 400;
-            }
-        }
+      .save__btn {
+        background-color: #258f22;
+        border: 1px solid #258f22;
+        color: white;
 
-        .input__container {
-            width: 100%;
-            input {
-                outline: none;
-                width: 100%;
-                padding: 10px;
-                border: none;
-                background-color: #f2f2f2;
-                border-radius: 3px;
-
-                &:focus {
-                    outline: 1px solid;
-                }
-            }
-            textarea {
-                box-sizing: border-box;
-                resize: none;
-                width: 100%;
-                padding: 10px;
-                font-family: "Inter", sans-serif;
-                border: none;
-                background-color: #f2f2f2;
-                border-radius: 3px;
-                outline: none;
-                &:focus {
-                    outline: 1px solid;
-                }
-            }
+        &:hover {
+          background-color: color.scale(#258f22, $lightness: -10%);
         }
-
-        .footer__btns {
-            position: absolute;
-            bottom: 50px;
-            right: 50px;
-            display: flex;
-            gap: 10px;
-
-            .btn {
-                padding: 8px 20px;
-                border-radius: 50px;
-                cursor: pointer;
-            }
-            .cancel__btn {
-                border: 1px solid #258f22;
-                background-color: white;
-                color: #258f22;
-            }
-            .save__btn {
-                background-color: #258f22;
-                border: 1px solid #258f22;
-                color: white;
-            }
-        }
+      }
     }
+  }
 }

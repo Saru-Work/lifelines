@@ -1,61 +1,69 @@
 import { useEffect, useRef } from "react";
 import "./DropDown.scss";
 
-const DropDown = ({
+interface DropDownItem {
+  name: string;
+  handleClick: (id: string) => void;
+}
+
+interface DropDownProps {
+  list: DropDownItem[];
+  storyId: string;
+  setIsDropDownOpen: (open: boolean) => void;
+}
+
+const DropDown: React.FC<DropDownProps> = ({
   list,
   storyId,
   setIsDropDownOpen,
-}: {
-  list: any;
-  storyId: string;
-  setIsDropDownOpen: (state: boolean) => void;
 }) => {
-  const dropDownRef = useRef<HTMLDivElement | null>(null);
+  const dropDownRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    let ready = false;
-    const timeout = setTimeout(() => {
-      ready = true;
-    }, 10);
-    function closeDropDown(e: MouseEvent) {
+    const handleOutsideClick = (e: MouseEvent) => {
       if (
-        ready &&
         dropDownRef.current &&
-        !dropDownRef.current?.contains(e.target as Node)
+        !dropDownRef.current.contains(e.target as Node)
       ) {
         setIsDropDownOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("click", closeDropDown);
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      clearTimeout(timeout);
-      document.removeEventListener("click", closeDropDown);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, []);
+  }, [setIsDropDownOpen]);
+
   return (
     <div
       ref={dropDownRef}
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
       className="option__dropdown"
+      role="menu"
+      onClick={(e) => e.stopPropagation()}
     >
       <ul>
-        {list.map((item: any, i: number) => {
-          return (
-            <li
-              className="options__li"
-              key={i}
-              onClick={() => {
+        {list.map((item, index) => (
+          <li
+            key={index}
+            className="options__li"
+            role="menuitem"
+            tabIndex={0}
+            onClick={() => {
+              item.handleClick(storyId);
+              setIsDropDownOpen(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
                 item.handleClick(storyId);
                 setIsDropDownOpen(false);
-              }}
-            >
-              {item.name}
-            </li>
-          );
-        })}
+              }
+            }}
+          >
+            {item.name}
+          </li>
+        ))}
       </ul>
     </div>
   );

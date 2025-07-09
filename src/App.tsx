@@ -28,7 +28,6 @@ function App() {
             photoURL: user.photoURL,
           })
         );
-        console.log(user);
       } else {
         dispatch(
           addUser({

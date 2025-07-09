@@ -1,183 +1,215 @@
 @use "../../styles/variables";
+@use "sass:color";
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-.login__form{
-    font-family: "Inter", sans-serif;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
+.login__form {
+  font-family: "Inter", sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  transform: scale(0.7);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 200ms ease;
+
+  &.show {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  form {
+    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background-color: rgba(255,255,255,0.5);
-    transition: all 100ms ease;
-    transform: scale(0.7);
-    opacity: 0;
-    visibility: hidden;
+    gap: 20px;
+    width: 50%;
+    height: 100%;
+    padding: 50px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 
-    &.show{
-        transform: scale(1);
-        opacity: 1;
-        visibility: visible;
+    @media (max-width: 640px) {
+      width: 100%;
     }
 
-    form{
-        padding: 50px;
-        position: relative;
-        display: flex;
-        gap: 20px;
-        flex-direction: column;
-        align-items: center;
-        width: 50%;
-        background-color: white;
-        height: 100%;
-        box-shadow: 1px 1px 10px 2px #e2e2e2;
-        .close__btn{
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 100;
-            background-color: transparent;
-            font-size: 1.5rem;
-            cursor: pointer;
-            border: none;
-        }
-        h1{
-            color: variables.$secondary-color;
-        }
-        .input__section{
-            display: flex;
-            flex-direction: column;
-            position: relative;
-
-            label{
-                margin-left: 20px;
-                display: none;
-            }
-            input{
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-                font-family: "Inter", sans-serif;
-                padding: 10px 20px;
-                width: 340px;
-                outline: none;
-                border-radius: 20px;
-                border: none;
-                font-weight: medium;
-                border: 1px solid black;
-                font-size: 1.05rem;
-
-                &::placeholder {
-                    color: #888;
-                    font-family: "Inter", sans-serif;
-                    transition: color 0.1s ease;
-                }
-                
-                &:focus::placeholder {
-                    color: transparent;
-                }
-                @media (max-width: 800px) {
-                    width: 280px;
-                }
-            }
-            .show__password__btn{
-                position: absolute;
-                right: 14px;
-                top: 11px;
-                background-color: transparent;
-                border: none;
-                cursor: pointer;
-            }
-            .eye__icon{
-                width: 22px;
-            }
-            .error{
-                height: 16px;
-                color: rgb(255, 75, 75);
-            }
-        }
-        p{
-            font-weight: medium;
-            font-size: 0.8rem;
-        }
-        span{
-            cursor: pointer;
-            color: variables.$primary-color;
-        }
-        .google__auth{
-            width: 340px;
-            padding: 10px 0px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            position: relative;
-            
-            img{
-                width: 20px;
-                position: absolute;
-                left: 10px;
-            }
-            @media (max-width: 800px) {
-                width: 280px;
-            }
-        }
-        .sign__btn{
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            justify-content: center;
-            font-family: "Inter", sans-serif;
-            background-color: variables.$primary-color;
-            cursor: pointer;
-            padding: 13px 20px;
-            border: none;
-            font-weight: 500;
-            border-radius: 20px;
-            color: white;
-            width: 340px;
-            margin-bottom: 20px;
-            position: relative;
-            @media (max-width: 800px) {
-                width: 280px;
-            }
-              
-        }
-        @media (max-width: 640px) {
-            width: 100%;
-        }
+    .close__btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #555;
     }
+
+    h1 {
+      color: variables.$secondary-color;
+      margin: 0;
+    }
+
+    .input__section {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      label {
+        display: none;
+        margin-left: 20px;
+      }
+
+      input {
+        width: 340px;
+        padding: 10px 20px;
+        border-radius: 20px;
+        border: 1px solid black;
+        font-size: 1.05rem;
+        font-family: "Inter", sans-serif;
+        outline: none;
+        font-weight: 500;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+        &::placeholder {
+          color: #888;
+          font-family: inherit;
+          transition: color 0.1s ease;
+        }
+
+        &:focus::placeholder {
+          color: transparent;
+        }
+
+        @media (max-width: 800px) {
+          width: 280px;
+        }
+      }
+
+      .show__password__btn {
+        position: absolute;
+        top: 11px;
+        right: 14px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+      }
+
+      .eye__icon {
+        width: 22px;
+      }
+
+      .error {
+        height: 16px;
+        color: rgb(255, 75, 75);
+        font-size: 0.8rem;
+      }
+    }
+
+    p {
+      font-weight: 500;
+      font-size: 0.8rem;
+    }
+
+    span {
+      cursor: pointer;
+      color: variables.$primary-color;
+    }
+
+    .google__auth {
+      width: 340px;
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      position: relative;
+      background-color: #fff;
+      transition: background-color 0.2s;
+
+      img {
+        position: absolute;
+        left: 10px;
+        width: 20px;
+      }
+
+      &:hover {
+        background-color: #f3f3f3;
+      }
+
+      @media (max-width: 800px) {
+        width: 280px;
+      }
+    }
+
+    .sign__btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 340px;
+      padding: 13px 20px;
+      background-color: variables.$primary-color;
+      border: none;
+      border-radius: 20px;
+      color: #fff;
+      font-family: "Inter", sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-bottom: 20px;
+      position: relative;
+
+      &:hover {
+        background-color: color.scale(variables.$primary-color, $lightness: -10%);
+      }
+
+      @media (max-width: 800px) {
+        width: 280px;
+      }
+    }
+  }
 }
 
 .loader {
-    width: 0px;
-    height: 0px;
-    min-height: 0px;
-    background-color: transparent;
-    border: 0px solid white;
-    border-bottom: 3px solid transparent;
-    border-radius: 50%;
-    transition: all 0.2s ease-out;
-}
-.spinning{
-    width: 16px;
-    height: 16px;
-    border: 3px solid white;
-    border-bottom: 3px solid transparent;
-    min-height: 16px;
-    animation: spin 0.5s ease-in-out infinite;
-}
-@keyframes spin {
-0% {
-    transform: rotate(0deg);
+  width: 0;
+  height: 0;
+  min-height: 0;
+  background: transparent;
+  border: 0 solid white;
+  border-bottom: 3px solid transparent;
+  border-radius: 50%;
+  transition: all 0.2s ease-out;
 }
 
-100% {
-    transform: rotate(360deg);
+.spinning {
+  width: 16px;
+  height: 16px;
+  min-height: 16px;
+  border: 3px solid white;
+  border-bottom: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.5s ease-in-out infinite;
 }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

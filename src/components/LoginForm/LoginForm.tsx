@@ -127,7 +127,7 @@ const LoginForm = ({
     <div
       ref={formContainerRef}
       className={`login__form ${loginState ? " show" : null}`}
-      onClick={(e) => {
+      onMouseDown={(e) => {
         if (e.target != formContainerRef.current) return;
         dispatch(changeState(loginState));
       }}

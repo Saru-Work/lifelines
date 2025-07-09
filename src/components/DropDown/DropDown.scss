@@ -1,24 +1,32 @@
 .option__dropdown {
-    position: absolute;
-    top: 100%;        
-    right: 0;         
-    width: 120px;
-    background-color: white;
-    padding: 10px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border-radius: 5px;
-    box-shadow: 1px 1px 10px 2px #e2e2e2;
-    z-index: 50;
-    
-    .options__li {
-        padding: 10px 0;
-        cursor: pointer;
-        border-radius: 4px;
-        padding-left: 10px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 150px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 8px 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  z-index: 9999;
+  transition: all 0.2s ease-in-out;
 
-        &:hover {
-            background-color: #f1f1f1;
-        }
+  .options__li {
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #333;
+    transition: background-color 0.15s, color 0.15s;
+
+    &:hover,
+    &:focus {
+      background-color: #f5f7fa;
+      color: #000;
     }
+
+    &:active {
+      background-color: #e4eaf1;
+    }
+  }
 }

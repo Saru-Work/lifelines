@@ -20,184 +20,126 @@ import NavBar from "../../components/NavBar/NavBar";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import LoadingBar from "../../components/LoadingBar/LoadingBar";
+import { formatDistanceToNow } from "date-fns";
+
 const StoryPage = () => {
   const { storyId } = useParams();
   const [story, setStory] = useState<any>();
-  const [likeClicked, setLikedClicked] = useState(false);
   const [likes, setLikes] = useState(0);
-  const [userData, setUserData] = useState<any>();
-  const userState = useSelector((state: RootState) => state.user);
-  const [loading, setLoading] = useState(true);
+  const [likeClicked, setLikeClicked] = useState(false);
+  const [comments, setComments] = useState<any[]>([]);
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [commentStatus, setCommentStatus] = useState(false);
-  const commentRef = useRef<any>(null);
-  const getLikeStatus = async () => {
+  const [userData, setUserData] = useState<any>();
+  const commentRef = useRef<HTMLTextAreaElement>(null);
+  const userState = useSelector((state: RootState) => state.user);
+
+  useEffect(() => {
     if (!storyId) return;
-    // Referencing the stories collection
-    const storyRef = doc(db, "stories", storyId);
-    // Fetching likes
-    const likesCollectionRef = collection(storyRef, "likes");
-    const likedQuery = query(likesCollectionRef, where("liked", "==", true));
-    const likedDocs = await getDocs(likedQuery);
 
-    // Fetching comments
-    const commentsCollectionRef = collection(storyRef, "comments");
-    const commentDocs = await getDocs(commentsCollectionRef);
-    const currentComments: any = [];
-    commentDocs.forEach((doc) => {
-      currentComments.push({ ...doc.data(), commentDocId: doc.id });
-    });
-    setComments(currentComments);
-
-    setLikes(likedDocs.size);
-  };
-  function storeToLocalStorage() {
-    if (userState.uid == "") return;
-    try {
-      localStorage.setItem("userLocalState", JSON.stringify(userState));
-    } catch (err: any) {
-      console.log(err.message);
-    }
-  }
-  useEffect(() => {
-    storeToLocalStorage();
-    getLikeStatus();
-  }, []);
-  useEffect(() => {
-    async function initialCheck() {
-      // if (!userState.uid) return;
-      if (!storyId) return;
+    const fetchData = async () => {
       const storyRef = doc(db, "stories", storyId);
-      const likesCollectionRef = collection(storyRef, "likes");
-      const storedUser = localStorage.getItem("userLocalState");
-      if (!storedUser) return;
-      const likedRef = doc(
-        likesCollectionRef,
-        userState.uid || JSON.parse(storedUser).uid
-      );
-      const likedDoc = await getDoc(likedRef);
+      const storySnap = await getDoc(storyRef);
 
-      if (likedDoc.exists()) {
-        const data = likedDoc.data();
-        if (data.liked === true) {
-          setLikedClicked(true);
-        } else {
-          data.liked = false;
-        }
-      } else {
-        setLikedClicked(false);
+      if (storySnap.exists()) {
+        setStory(storySnap.data());
+
+        const authorSnap = await getDocs(
+          query(
+            collection(db, "users"),
+            where("uid", "==", storySnap.data().uid)
+          )
+        );
+        authorSnap.forEach((doc) =>
+          setUserData({ ...doc.data(), uid: doc.id })
+        );
+
+        const likesSnap = await getDocs(collection(storyRef, "likes"));
+        setLikes(likesSnap.docs.filter((d) => d.data().liked === true).length);
+
+        const commentSnap = await getDocs(collection(storyRef, "comments"));
+        const allComments = commentSnap.docs.map((d) => ({
+          ...d.data(),
+          id: d.id,
+        }));
+        setComments(allComments);
+
+        const likedSnap = await getDoc(
+          doc(collection(storyRef, "likes"), userState.uid)
+        );
+        setLikeClicked(likedSnap.exists() && likedSnap.data().liked);
       }
-    }
-    initialCheck();
-  }, []);
-
-  async function commentStory() {
-    if (!storyId || comment === "") return;
-
-    setCommentStatus(true);
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("uid", "==", userState.uid));
-    const querySnapshot = await getDocs(q);
-    let userDocId = "";
-
-    querySnapshot.forEach((doc) => {
-      userDocId = doc.id;
-    });
-    const storyRef = doc(db, "stories", storyId);
-    const commentsCollectionRef = collection(storyRef, "comments");
-    const docRef = await addDoc(commentsCollectionRef, {
-      comment: comment,
-      authorId: userState.uid,
-      authorName: userState.displayName,
-      createdAt: serverTimestamp(),
-      userDocId: userDocId,
-      photoUrl: userState.photoURL,
-    });
-    if (commentRef.current != null) {
-      commentRef.current.value = "";
-    }
-    getLikeStatus();
-    setCommentStatus(false);
-  }
-  useEffect(() => {
-    const getUser = async (userId: string) => {
-      if (!userId) return;
-      const usersRef = collection(db, "users");
-      const q = query(usersRef, where("uid", "==", userId));
-      const querySnapshot = await getDocs(q);
       setLoading(false);
-      querySnapshot.forEach((i) => {
-        setUserData({ ...i.data(), uid: i.id });
-      });
     };
-    const getStory = async () => {
-      if (!storyId) return;
-      const storyRef = doc(db, "stories", storyId);
-      const authSnap = await getDoc(storyRef);
-      if (authSnap.exists()) {
-        setStory(authSnap.data());
-        getUser(authSnap.data().uid);
-      } else {
-        console.log("Error");
-      }
-    };
-    getStory();
-  }, []);
+
+    fetchData();
+  }, [storyId]);
+
   const likeStory = async () => {
     if (!storyId) return;
-    setLikes((prev) => prev + 1);
+    setLikeClicked(true);
     const storyRef = doc(db, "stories", storyId);
-    const likedRef = doc(collection(storyRef, "likes"), userState.uid);
-    const a = await setDoc(likedRef, {
+    await setDoc(doc(collection(storyRef, "likes"), userState.uid), {
       liked: true,
       likedAt: Timestamp.now(),
     });
-    getLikeStatus();
+    setLikes((prev) => prev + 1);
   };
-  async function deleteComment(id: string) {
-    if (!storyId) return;
-    const currentComments = comments.filter(
-      (comment: any) => comment.commentDocId != id
-    );
-    setComments(currentComments);
-    const storyRef = doc(db, "stories", storyId);
-    await deleteDoc(doc(storyRef, "comments", id));
-    getLikeStatus();
-  }
+
   const unlikeStory = async () => {
     if (!storyId) return;
-    setLikes((prev) => prev - 1);
+    setLikeClicked(false);
     const storyRef = doc(db, "stories", storyId);
-    const likedRef = doc(collection(storyRef, "likes"), userState.uid);
-    await setDoc(likedRef, {
+    await setDoc(doc(collection(storyRef, "likes"), userState.uid), {
       liked: false,
       likedAt: Timestamp.now(),
     });
-    getLikeStatus();
+    setLikes((prev) => prev - 1);
   };
+
+  const submitComment = async () => {
+    if (!storyId || !comment.trim()) return;
+    setCommentStatus(true);
+    const storyRef = doc(db, "stories", storyId);
+    const commentsRef = collection(storyRef, "comments");
+    const newComment = {
+      comment,
+      authorId: userState.uid,
+      authorName: userState.displayName,
+      createdAt: serverTimestamp(),
+      photoUrl: userState.photoURL,
+    };
+    await addDoc(commentsRef, newComment);
+    setComment("");
+    commentRef.current!.value = "";
+    setCommentStatus(false);
+    const snap = await getDocs(commentsRef);
+    setComments(snap.docs.map((d) => ({ ...d.data(), id: d.id })));
+  };
+
+  const deleteComment = async (id: string) => {
+    if (!storyId) return;
+    const storyRef = doc(db, "stories", storyId);
+    await deleteDoc(doc(collection(storyRef, "comments"), id));
+    setComments((prev) => prev.filter((c) => c.id !== id));
+  };
+
   return (
     <div className="story__page">
       <LoadingBar loading={loading} />
       <NavBar filterStories={() => {}} />
-      {story && userData ? (
+      {!story || !userData ? null : (
         <div className="hero">
           <div className="story__profile__container">
-            <Link className="link" to={"/author/" + userData.uid}>
+            <Link className="link" to={`/author/${userData.uid}`}>
               <div className="nameandphoto">
                 <img
                   className="story__author__picture"
                   src={userData.photoURL}
                   alt=""
                 />
-                <p
-                  style={{
-                    textDecoration: "none",
-                  }}
-                  className="story__author__name"
-                >
-                  {userData.name}
-                </p>
+                <p className="story__author__name">{userData.name}</p>
               </div>
             </Link>
           </div>
@@ -207,55 +149,39 @@ const StoryPage = () => {
             <div className="buttons">
               <div className="like__btn__container">
                 <div
-                  onClick={() => {
-                    setLikedClicked((prev) => !prev);
-                    if (likeClicked) {
-                      unlikeStory();
-                    } else {
-                      likeStory();
-                    }
-                  }}
-                  className={`like__btn ${likeClicked && " clicked"}`}
+                  onClick={() => (likeClicked ? unlikeStory() : likeStory())}
+                  className={`like__btn ${likeClicked ? "clicked" : ""}`}
+                  title={likeClicked ? "Unlike" : "Like"}
                 ></div>
                 <p>{likes}</p>
               </div>
-              <div className="comment__btn"></div>
             </div>
           </div>
+
           <div className="comment__input__area">
             <textarea
               ref={commentRef}
-              onChange={(e) => {
-                setComment(e.target.value);
-                e.target.style.height = "auto";
-                e.target.style.height = e.target.scrollHeight + "px";
-              }}
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write a comment..."
               className="comment__input"
-            ></textarea>
+              disabled={commentStatus}
+            />
             <button
-              onClick={commentStory}
+              onClick={submitComment}
               className="comment__btn"
-              style={{
-                cursor: commentStatus ? "not-allowed" : "pointer",
-              }}
+              disabled={commentStatus || comment.trim() === ""}
             >
-              {commentStatus ? "...Comment" : "Comment"}
+              {commentStatus ? "...Commenting" : "Comment"}
             </button>
           </div>
+
           <div className="comments__area">
-            {comments.map((comment: any, i: number) => {
-              return (
-                <Comment
-                  deleteComment={deleteComment}
-                  key={i}
-                  comment={comment}
-                />
-              );
-            })}
+            {comments.map((c) => (
+              <Comment key={c.id} comment={c} deleteComment={deleteComment} />
+            ))}
           </div>
         </div>
-      ) : (
-        <div></div>
       )}
     </div>
   );
@@ -269,17 +195,12 @@ const Comment = ({
   deleteComment: any;
 }) => {
   const userState = useSelector((state: RootState) => state.user);
-  const [isHovered, setIsHovered] = useState(false);
-
+  const [hovered, setHovered] = useState(false);
   return (
     <div
-      onMouseMove={() => {
-        setIsHovered(true);
-      }}
-      onMouseLeave={() => {
-        setIsHovered(false);
-      }}
       className="comment__frame"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <div className="comment__pic__container">
         <img className="comment__pic" src={comment.photoUrl} alt="" />
@@ -287,15 +208,21 @@ const Comment = ({
       <div className="name__and__comment">
         <h4 className="comment__name">{comment.authorName}</h4>
         <p className="comment__content">{comment.comment}</p>
+        {comment.createdAt?.seconds && (
+          <p className="comment__time">
+            {formatDistanceToNow(new Date(comment.createdAt.seconds * 1000), {
+              addSuffix: true,
+            })}
+          </p>
+        )}
       </div>
-      {comment.authorId === userState.uid && isHovered && (
+      {comment.authorId === userState.uid && hovered && (
         <button
-          onClick={() => {
-            deleteComment(comment.commentDocId);
-          }}
+          onClick={() => deleteComment(comment.id)}
           className="comment__delete__btn"
+          title="Delete Comment"
         >
-          <img className="trash__icon" src={trashIcon} />
+          <img className="trash__icon" src={trashIcon} alt="Delete" />
         </button>
       )}
     </div>

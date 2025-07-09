@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar/NavBar";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import "./Feed.scss";
 import Story from "../../components/Story/Story";
 import Shimmer from "../../components/Shimmer/Shimmer";
-interface story {
+
+interface StoryType {
   authorName: string;
   profileUrl: string;
   docId: string;
@@ -13,35 +14,61 @@ interface story {
   story: string;
   uid: string;
   createdAt: string;
-  likes: number;
-  comments: string;
+  name?: string;
+  photoUrl?: string;
+  userId?: string;
+  likes?: number;
+  comments?: number;
 }
+
 const Feed = () => {
-  const [stories, setStories] = useState<story[] | []>([]);
-  const [totalStories, setTotalStories] = useState<story[] | []>([]);
+  const [stories, setStories] = useState<StoryType[]>([]);
+  const [filteredStories, setFilteredStories] = useState<StoryType[]>([]);
 
-  // Filter stories for search
-  const filterStories = (input: string) => {
-    const filteredStories = totalStories.filter((story) => {
-      return story.story.includes(input);
-    });
-    setStories(filteredStories);
-  };
-  useEffect(() => {
-    const getStories = async () => {
-      const querySnapshot = await getDocs(collection(db, "stories"));
-      const data: any = [];
+  const getStoryMeta = async (uid: string, storyId: string) => {
+    const userQuery = query(collection(db, "users"), where("uid", "==", uid));
+    const userSnap = await getDocs(userQuery);
+    const likesRef = collection(db, "stories", storyId, "likes");
+    const commentsRef = collection(db, "stories", storyId, "comments");
 
-      querySnapshot.forEach(async (doc) => {
-        data.push({
-          ...doc.data(),
-          docId: doc.id,
-        });
-      });
-      setStories(data);
-      setTotalStories(data);
+    const [likesSnap, commentsSnap] = await Promise.all([
+      getDocs(query(likesRef, where("liked", "==", true))),
+      getDocs(commentsRef),
+    ]);
+
+    const user = userSnap.docs[0]?.data();
+    return {
+      name: user?.name || "Unknown",
+      photoUrl: user?.photoURL || "",
+      userId: userSnap.docs[0]?.id || "",
+      likes: likesSnap.size,
+      comments: commentsSnap.size,
     };
-    getStories();
+  };
+
+  const fetchStories = async () => {
+    const snap = await getDocs(collection(db, "stories"));
+    const storyData = await Promise.all(
+      snap.docs.map(async (doc) => {
+        const base = doc.data();
+        const meta = await getStoryMeta(base.uid, doc.id);
+        return { ...base, ...meta, docId: doc.id } as StoryType;
+      })
+    );
+    setStories(storyData);
+    setFilteredStories(storyData);
+  };
+
+  const filterStories = (input: string) => {
+    const query = input.toLowerCase();
+    const filtered = stories.filter((s) =>
+      s.story.toLowerCase().includes(query)
+    );
+    setFilteredStories(filtered);
+  };
+
+  useEffect(() => {
+    fetchStories();
   }, []);
 
   return (
@@ -52,72 +79,56 @@ const Feed = () => {
           <h2 className="foryou">For You</h2>
           <div className="stories">
             <ul>
-              {stories.length !== 0
-                ? stories.map((story) => {
-                    return (
-                      <li key={story.docId}>
-                        <Story list={[]} isProfile={false} story={story} />
-                      </li>
-                    );
-                  })
-                : new Array(10).fill(null).map((_, i) => {
-                    return (
-                      <li key={i}>
-                        <Shimmer />
-                      </li>
-                    );
-                  })}
+              {filteredStories.length > 0
+                ? filteredStories.map((storyDoc) => (
+                    <li key={storyDoc.docId}>
+                      <Story list={[]} isProfile={false} storyDoc={storyDoc} />
+                    </li>
+                  ))
+                : new Array(10).fill(null).map((_, i) => (
+                    <li key={i}>
+                      <Shimmer />
+                    </li>
+                  ))}
             </ul>
           </div>
         </div>
+
         <div className="left__area">
           <h1>LifeLines</h1>
           <p>
-            LifeLines is a personal blog app designed to share stories,
-            experiences, and insights on various aspects of life. With a clean
-            and user-friendly interface, it allows users to write and explore
-            articles on topics ranging from personal growth and relationships to
-            travel and hobbies.
+            LifeLines is a personal blog app for sharing stories and insights on
+            life. It offers a user-friendly platform for writing, reading, and
+            connecting through posts on personal growth, travel, hobbies, and
+            more.
           </p>
-          <p>
-            LifeLines aims to create a space for self-expression, connection,
-            and inspiration, where every story adds a unique line to the
-            collective journey of life.
-          </p>
-
           <ul>
             <li>
               <h3>Personalized Content</h3>
               <p>
-                LifeLines allows users to create and share their own stories and
-                experiences, making it a personal space for self-expression.
-                From personal growth to hobbies, users can write about anything
-                that resonates with them.
+                Create and share your unique stories, experiences, and
+                reflections across a wide range of topics.
               </p>
             </li>
             <li>
               <h3>User-Friendly Interface</h3>
               <p>
-                The app offers an intuitive and simple design, making it easy
-                for anyone to navigate, whether they’re writing a post or
-                browsing through others’ stories.
+                Navigate easily whether you’re writing or exploring others’
+                stories with an intuitive UI.
               </p>
             </li>
             <li>
               <h3>Post Creation & Editing</h3>
               <p>
-                LifeLines enables users to write, edit, and update their posts
-                at any time. This flexibility empowers writers to keep their
-                content up-to-date or add new thoughts as they grow and evolve.(
-                Editing is coming soon)
+                Edit and update your posts anytime to reflect your evolving
+                thoughts. (Editing coming soon)
               </p>
             </li>
             <li>
               <h3>Interactive Community</h3>
               <p>
-                The app encourages interaction by allowing users to comment on,
-                like, and share stories. This fosters a sense of community and
-                connection among readers and writers.
+                Comment on, like, and share stories to build meaningful
+                interactions with the community.
               </p>
             </li>
           </ul>

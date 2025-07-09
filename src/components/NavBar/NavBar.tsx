@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { AnimatePresence, motion } from "motion/react";
+import { removeUser } from "../../state/userSlice";
+import { auth } from "../../config/firebase";
+import { RootState } from "../../state/store";
 import searchIcon from "../../assets/icons/search.svg";
-import "./NavBar.scss";
 import logo from "../../assets/logo/LIfeLines.png";
 import writeIcon from "../../assets/icons/write.svg";
 import notificationIcon from "../../assets/icons/notification.svg";
@@ -9,57 +15,60 @@ import profileIcon from "../../assets/icons/profile.svg";
 import storiesIcon from "../../assets/icons/stories.svg";
 import statsIcon from "../../assets/icons/stats.svg";
 import libraryIcon from "../../assets/icons/library.svg";
-import { removeUser } from "../../state/userSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { signOut } from "firebase/auth";
-import { auth } from "../../config/firebase";
-import { Link, useNavigate } from "react-router-dom";
-import { RootState } from "../../state/store";
 import settingIcon from "../../assets/icons/settings.svg";
 import logoutIcon from "../../assets/icons/signout.svg";
-const NavBar = ({ filterStories }: { filterStories: any }) => {
+import "./NavBar.scss";
+
+const NavBar = ({
+  filterStories,
+}: {
+  filterStories: (term: string) => void;
+}) => {
   const userState = useSelector((state: RootState) => state.user);
   const [profileDD, setProfileDD] = useState(false);
-  const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
+  const navigate = useNavigate();
 
-  interface profileItemsInterface {
-    content: string;
-    icon: string;
-    action: () => void;
-  }
-  const profileDropDownItems: profileItemsInterface[] = [
+  const profileDropDownItems = [
     {
       content: "Profile",
       icon: profileIcon,
-      action: () => {
-        let id = "";
-        for (let i = 0; userState.email[i] != "@"; i++) {
-          id += userState.email[i];
-        }
-        navigate("/me");
-      },
+      action: () => navigate("/me"),
     },
-    { content: "Library", icon: libraryIcon, action: () => {} },
-    { content: "Stories", icon: storiesIcon, action: () => {} },
-    { content: "Stats", icon: statsIcon, action: () => {} },
+    {
+      content: "Library",
+      icon: libraryIcon,
+      action: () => navigate("/library"),
+    },
+    {
+      content: "Stories",
+      icon: storiesIcon,
+      action: () => navigate("/stories"),
+    },
+    {
+      content: "Stats",
+      icon: statsIcon,
+      action: () => navigate("/stats"),
+    },
   ];
 
   return (
     <div className="nav__bar">
       <div className="left">
         <Link to="/feed">
-          <img className="logo__img" src={logo} alt="" />
+          <img className="logo__img" src={logo} alt="logo" />
         </Link>
-        <div>
-          <img className="search__icon" src={searchIcon} alt="" />
+        <div className="search__wrapper">
+          <img className="search__icon" src={searchIcon} alt="search" />
           <input
             className="search__bar"
             type="text"
             placeholder="Search"
+            value={searchInput}
             onChange={(e) => {
-              setSearchInput(e.target.value);
-              filterStories(searchInput);
+              const value = e.target.value;
+              setSearchInput(value);
+              filterStories(value);
             }}
           />
         </div>
@@ -68,25 +77,27 @@ const NavBar = ({ filterStories }: { filterStories: any }) => {
         <ul>
           <li>
             <Link to="/write">
-              <img className="write__icon icon" src={writeIcon} alt="" />
+              <img className="write__icon icon" src={writeIcon} alt="write" />
             </Link>
           </li>
           <li>
-            <img className="notification__icon icon" src={notificationIcon} />
+            <img
+              className="notification__icon icon"
+              src={notificationIcon}
+              alt="notify"
+            />
           </li>
           <li className="user">
             <DropDown
+              items={profileDropDownItems}
               profileDD={profileDD}
               setProfileDD={setProfileDD}
-              items={profileDropDownItems}
             />
             <img
-              onClick={() => {
-                setProfileDD(true);
-              }}
+              onClick={() => setProfileDD((prev) => !prev)}
               className="icon user__icon"
               src={userState.photoURL || userIcon}
-              alt=""
+              alt="user"
             />
           </li>
         </ul>
@@ -94,7 +105,8 @@ const NavBar = ({ filterStories }: { filterStories: any }) => {
     </div>
   );
 };
-interface props {
+
+interface DropDownProps {
   items: {
     content: string;
     icon: string;
@@ -104,69 +116,77 @@ interface props {
   setProfileDD: (state: boolean) => void;
 }
 
-const DropDown = ({ items, profileDD, setProfileDD }: props) => {
+const DropDown = ({ items, profileDD, setProfileDD }: DropDownProps) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const dropDownRef = useRef<HTMLDivElement | null>(null);
+  const dropDownRef = useRef<HTMLUListElement | null>(null);
+
   useEffect(() => {
-    function closeDropDown(e: MouseEvent | any) {
+    const handleClickOutside = (e: MouseEvent) => {
       if (
         dropDownRef.current &&
-        !dropDownRef.current?.contains(e.target as Node)
+        !dropDownRef.current.contains(e.target as Node)
       ) {
         setProfileDD(false);
       }
-    }
-    document.addEventListener("mousedown", (e) => {
-      closeDropDown(e);
-    });
-  }, []);
-  const dispatch = useDispatch();
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [setProfileDD]);
+
   const signOutUser = () => {
-    signOut(auth).then().catch();
+    signOut(auth);
   };
+
+  const dropDownVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.9 },
+  };
+
   return (
-    <>
+    <AnimatePresence>
       {profileDD && (
-        <div ref={dropDownRef} className="dropdown">
-          <ul>
-            {items.map((item, i) => {
-              return (
-                <li
-                  key={i}
-                  className="dropdown__li"
-                  onClick={() => {
-                    item.action();
-                  }}
-                >
-                  <span>
-                    <img className="li__icon" src={item.icon} alt="" />
-                  </span>
-                  <span>{item.content}</span>
-                </li>
-              );
-            })}
-          </ul>
-          <hr />
-          <ul>
-            <li className="drop__li">
-              <img src={settingIcon} alt="" />
-              <span>Settings</span>
-            </li>
+        <motion.ul
+          ref={dropDownRef}
+          className="dropdown"
+          variants={dropDownVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          {items.map((item, i) => (
             <li
-              className="drop__li"
+              key={i}
+              className="dropdown__li"
               onClick={() => {
-                dispatch(removeUser());
-                signOutUser();
-                navigate("/");
+                item.action();
+                setProfileDD(false);
               }}
             >
-              <img src={logoutIcon} alt="" />
-              <span>Log out</span>
+              <img className="li__icon" src={item.icon} alt={item.content} />
+              <span>{item.content}</span>
             </li>
-          </ul>
-        </div>
+          ))}
+          <li className="drop__li" onClick={() => navigate("/settings")}>
+            <img src={settingIcon} alt="settings" />
+            <span>Settings</span>
+          </li>
+          <li
+            className="drop__li"
+            onClick={() => {
+              dispatch(removeUser());
+              signOutUser();
+              navigate("/");
+            }}
+          >
+            <img src={logoutIcon} alt="logout" />
+            <span>Log out</span>
+          </li>
+        </motion.ul>
       )}
-    </>
+    </AnimatePresence>
   );
 };
+
 export default NavBar;
