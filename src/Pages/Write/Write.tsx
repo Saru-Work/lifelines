@@ -47,7 +47,6 @@ const Write = () => {
       content: "Library",
       icon: libraryIcon,
       action: () => {
-        // Implement navigation or functionality
         setProfileDD(false);
       },
     },
@@ -55,7 +54,6 @@ const Write = () => {
       content: "Stories",
       icon: storiesIcon,
       action: () => {
-        // Implement navigation or functionality
         setProfileDD(false);
       },
     },
@@ -63,7 +61,6 @@ const Write = () => {
       content: "Stats",
       icon: statsIcon,
       action: () => {
-        // Implement navigation or functionality
         setProfileDD(false);
       },
     },
